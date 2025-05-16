@@ -1,0 +1,61 @@
+# Editor backups
+*.swp
+*.swo
+*~ 
+
+# Mac System files
+.DS_Store
+
+# Rails specific
+/log/*
+/tmp/*
+/vendor/bundle
+/public/assets
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+.byebug_history
+
+# Ignore database config and secrets
+/config/database.yml
+/config/secrets.yml
+
+# Ignore sensitive files
+/config/master.key
+/config/credentials.yml.enc
+
+# Ignore dotenv environment variables
+.env
+.env.*
+.envrc
+
+# PostgreSQL generated files
+*.pgsql
+*.sql
+*.sqlite3
+*.db
+
+# Coverage reports
+/coverage/
+/spec/examples.txt
+
+# Capybara artifacts
+/capybara-*.html
+
+# Chrome driver logs
+/chromedriver.log
+
+# Sprockets cache
+/.sass-cache
+/.cache
+/coverage
+/spring/*
+
+# IDEs and editors
+.idea
+.vscode
+*.iml
+
+# AWS specific
+/.elasticbeanstalk
