@@ -52,3 +52,5 @@ gem "graphql", "~> 2.5"
 group :development do
   gem "graphiql-rails"
 end
+
+gem 'rack-cors', '~> 1.1', require: 'rack/cors'
