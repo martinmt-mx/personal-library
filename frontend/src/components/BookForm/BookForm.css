@@ -27,3 +27,14 @@
 .book-form button:disabled {
   background-color: #ccc;
 }
+
+.rating-container {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.book-form button {
+  margin-top: 15px;
+}
