@@ -1,5 +1,6 @@
 import './App.css';
 import BookList from './components/BookList/BookList';
+import BookForm from './components/BookForm/BookForm';
 
 const App: React.FC = () => {
   return (
@@ -9,6 +10,7 @@ const App: React.FC = () => {
       </header>
 
       <main>
+        <BookForm />
         <BookList />
       </main>
     </div>
