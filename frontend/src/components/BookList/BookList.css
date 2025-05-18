@@ -1,0 +1,29 @@
+.book-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.book-list li {
+  margin-bottom: 8px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.book-list li strong {
+  color: #4CAF50;
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: red;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  color: darkred;
+}
