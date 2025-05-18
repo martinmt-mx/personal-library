@@ -16,14 +16,29 @@ const CREATE_BOOK = gql`
   }
 `;
 
+const GET_BOOKS = gql`
+  query GetBooks {
+    books {
+      id
+      title
+      author
+      status
+      rating
+      notes
+    }
+  }
+`;
+
 const BookForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [status, setStatus] = useState('to_read');
-  const [rating, setRating] = useState<number>(1); 
+  const [rating, setRating] = useState<number>(1);
   const [notes, setNotes] = useState('');
-  
-  const [createBook, { data, loading, error }] = useMutation(CREATE_BOOK);
+
+  const [createBook, { loading, error }] = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: GET_BOOKS }],
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +80,6 @@ const BookForm: React.FC = () => {
       <button type="submit" disabled={loading}>Add Book</button>
 
       {error && <p>Error: {error.message}</p>}
-      {data && <p>Book added successfully!</p>}
     </form>
   );
 };
