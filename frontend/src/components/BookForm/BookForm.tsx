@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import Rating from '../Rating/Rating';
 import './BookForm.css';
 
 const CREATE_BOOK = gql`
@@ -19,7 +20,7 @@ const BookForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [status, setStatus] = useState('to_read');
-  const [rating, setRating] = useState<number | undefined>(undefined);
+  const [rating, setRating] = useState<number>(1); 
   const [notes, setNotes] = useState('');
   
   const [createBook, { data, loading, error }] = useMutation(CREATE_BOOK);
@@ -37,10 +38,11 @@ const BookForm: React.FC = () => {
       }
     });
 
+    // Limpiar el formulario
     setTitle('');
     setAuthor('');
     setStatus('to_read');
-    setRating(undefined);
+    setRating(1);
     setNotes('');
   };
 
@@ -53,7 +55,12 @@ const BookForm: React.FC = () => {
         <option value="reading">Reading</option>
         <option value="finished">Finished</option>
       </select>
-      <input type="number" placeholder="Rating (1-5)" value={rating} onChange={(e) => setRating(Number(e.target.value))} />
+
+      <div className="rating-container">
+        <label>Rating:</label>
+        <Rating value={rating} onChange={setRating} />
+      </div>
+
       <textarea placeholder="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
       <button type="submit" disabled={loading}>Add Book</button>
 
