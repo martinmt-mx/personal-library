@@ -1,5 +1,9 @@
-import { useQuery, gql } from '@apollo/client';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { gql, useQuery } from '@apollo/client';
 import BookColumn from '../BookColumn/BookColumn';
+import { setBooks } from '../../store/bookSlice';
+import type { RootState } from '../../store';
 import './BookList.css';
 
 interface Book {
@@ -25,14 +29,23 @@ const GET_BOOKS = gql`
 `;
 
 const BookList: React.FC = () => {
+  const dispatch = useDispatch();
   const { loading, error, data } = useQuery<{ books: Book[] }>(GET_BOOKS);
+  
+  const books = useSelector((state: RootState) => state.books.books);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setBooks(data.books));
+    }
+  }, [data, dispatch]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const toReadBooks = (data?.books ?? []).filter((book) => book.status === 'to_read');
-  const readingBooks = (data?.books ?? []).filter((book) => book.status === 'reading');
-  const finishedBooks = (data?.books ?? []).filter((book) => book.status === 'finished');
+  const toReadBooks = books.filter((book) => book.status === 'to_read');
+  const readingBooks = books.filter((book) => book.status === 'reading');
+  const finishedBooks = books.filter((book) => book.status === 'finished');
 
   return (
     <div className="book-list">
