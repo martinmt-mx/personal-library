@@ -6,14 +6,11 @@ RSpec.describe 'GraphQL Mutations', type: :request do
       post '/graphql', params: { query: create_mutation }
       json = JSON.parse(response.body)
 
-      # 🔄 Agregamos un log para ver el resultado
       puts json
 
-      # 🔄 Ajuste: Verificar si realmente se guardó
       data = json['data']['createBook']
       created_book = Book.find(data['id'])
 
-      # 🔍 Comprobamos el valor en la DB y en la respuesta
       expect(data['title']).to eq('Refactoring')
       expect(data['author']).to eq('Martin Fowler')
       expect(created_book.title).to eq('Refactoring')
@@ -41,7 +38,6 @@ RSpec.describe 'GraphQL Mutations', type: :request do
     end
   end
 
-  # ✅ Mutación corregida
   def create_mutation
     <<~GQL
       mutation {
