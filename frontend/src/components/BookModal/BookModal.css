@@ -12,24 +12,54 @@
 }
 
 .modal-content {
-  background-color: rgb(66, 66, 66);
+  background-color: rgb(47, 47, 47);
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: 500px;
   max-width: 90%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.close-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  border: none;
-  background-color: #ff4c4c;
-  color: white;
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
   border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.close-button:hover {
-  background-color: #d43d3d;
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.edit-button {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.close-button {
+  background-color: #ba0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
