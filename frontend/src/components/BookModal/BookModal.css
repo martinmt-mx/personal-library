@@ -22,7 +22,9 @@
   gap: 10px;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 8px;
   font-size: 14px;
@@ -37,7 +39,7 @@ button {
 }
 
 .save-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
@@ -51,7 +53,7 @@ button {
 }
 
 .edit-button {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
   border: none;
   border-radius: 5px;

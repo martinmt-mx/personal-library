@@ -18,11 +18,18 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
-    
-    field :books, [Types::BookType], null: false, description: "List all books"
+    field :books, [Types::BookType], null: false, description: "List all books with pagination and filtering" do
+      argument :limit, Integer, required: false, default_value: 5
+      argument :offset, Integer, required: false, default_value: 0
+      argument :status, String, required: false
+    end
 
-    def books
-      Book.all
+    def books(limit:, offset:, status: nil)
+      if status
+        Book.where(status: status).limit(limit).offset(offset)
+      else
+        Book.limit(limit).offset(offset)
+      end
     end
 
     field :test_field, String, null: false,
