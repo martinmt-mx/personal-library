@@ -22,18 +22,18 @@ interface BookColumnProps {
   hasMore?: boolean;
 }
 
-const UPDATE_BOOK = gql`
+export const DELETE_BOOK = gql`
+  mutation DeleteBook($id: ID!) {
+    deleteBook(id: $id)
+  }
+`;
+
+export const UPDATE_BOOK = gql`
   mutation UpdateBook($id: ID!, $status: String!) {
     updateBook(id: $id, status: $status) {
       id
       status
     }
-  }
-`;
-
-const DELETE_BOOK = gql`
-  mutation DeleteBook($id: ID!) {
-    deleteBook(id: $id)
   }
 `;
 
