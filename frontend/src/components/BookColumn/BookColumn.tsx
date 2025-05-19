@@ -1,6 +1,6 @@
 import { useMutation, gql } from '@apollo/client';
 import { useDispatch } from 'react-redux';
-import { updateBook, deleteBook } from '../../store/bookSlice';
+import { updateBook, deleteBook, selectBook } from '../../store/bookSlice';
 import './BookColumn.css';
 
 interface Book {
@@ -53,11 +53,12 @@ const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
                 }
             }
         } catch (error) {
-        console.error("Error al actualizar el estado:", error);
-    }
+            console.error("Error al actualizar el estado:", error);
+        }
     };
 
-    const handleDelete = async (id: string, title: string) => {
+    const handleDelete = async (id: string, title: string, e: React.MouseEvent) => {
+        e.stopPropagation(); 
         const confirmDelete = window.confirm(`¿Estás seguro de que quieres eliminar el libro "${title}"?`);
         if (confirmDelete) {
             try {
@@ -73,30 +74,41 @@ const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
         }
     };
 
+    const handleSelectBook = (e: React.MouseEvent, book: Book) => {
+        if ((e.target as HTMLElement).tagName !== "SELECT") {
+            dispatch(selectBook(book));
+        }
+    };
+
     return (
         <div className="book-column">
             <h2>{title}</h2>
             <ul>
                 {books.map((book) => (
                     <li key={book.id}>
-                        <div className="book-info">
+                        <div
+                            className="book-info"
+                            onClick={(e) => handleSelectBook(e, book)}
+                            style={{ cursor: "pointer" }}
+                        >
                             <span>{book.title} - {book.author}</span>
-                            <div className="actions">
-                                <select
-                                    value={book.status}
-                                    onChange={(e) => handleChangeStatus(book.id, e.target.value)}
-                                    >
-                                    <option value="to_read">To Read</option>
-                                    <option value="reading">Reading</option>
-                                    <option value="finished">Finished</option>
-                                </select>
-                                <button
-                                    className="delete-button"
-                                    onClick={() => handleDelete(book.id, book.title)}
-                                    >
-                                    ❌
-                                </button>
-                            </div>
+                        </div>
+                        <div className="actions">
+                            <select
+                                value={book.status}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={(e) => handleChangeStatus(book.id, e.target.value)}
+                            >
+                                <option value="to_read">To Read</option>
+                                <option value="reading">Reading</option>
+                                <option value="finished">Finished</option>
+                            </select>
+                            <button
+                                className="delete-button"
+                                onClick={(e) => handleDelete(book.id, book.title, e)}
+                            >
+                                ❌
+                            </button>
                         </div>
                     </li>
                 ))}

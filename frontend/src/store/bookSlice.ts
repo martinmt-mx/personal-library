@@ -12,17 +12,19 @@ interface Book {
 
 interface BookState {
     books: Book[];
+    selectedBook: Book | null;
 }
 
 const initialState: BookState = {
-    books: []
+    books: [],
+    selectedBook: null,
 };
 
 export const bookSlice = createSlice({
     name: 'books',
-        initialState,
-        reducers: {
-            setBooks: (state, action: PayloadAction<Book[]>) => {
+    initialState,
+    reducers: {
+        setBooks: (state, action: PayloadAction<Book[]>) => {
             state.books = action.payload;
         },
 
@@ -40,8 +42,12 @@ export const bookSlice = createSlice({
         deleteBook: (state, action: PayloadAction<string>) => {
             state.books = state.books.filter((book) => book.id !== action.payload);
         },
+
+        selectBook: (state, action: PayloadAction<Book | null>) => {
+            state.selectedBook = action.payload;
+        },
     },
 });
 
-export const { setBooks, addBook, updateBook, deleteBook } = bookSlice.actions;
+export const { setBooks, addBook, updateBook, deleteBook, selectBook } = bookSlice.actions;
 export default bookSlice.reducer;
