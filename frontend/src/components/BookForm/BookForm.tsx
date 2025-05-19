@@ -3,6 +3,7 @@ import { useMutation, gql } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { addBook } from '../../store/bookSlice';
 import Rating from '../Rating/Rating';
+import Spinner from '../Spinner/Spinner';
 import { toast } from 'react-toastify';
 import './BookForm.css';
 
@@ -26,11 +27,13 @@ const BookForm: React.FC = () => {
   const [rating, setRating] = useState<number>(1);
   const [notes, setNotes] = useState('');
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
-  const [createBook, { loading, error }] = useMutation(CREATE_BOOK);
+   const [createBook] = useMutation(CREATE_BOOK);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const { data } = await createBook({
@@ -54,6 +57,8 @@ const BookForm: React.FC = () => {
       }
     } catch (err) {
       toast.error('❌ Hubo un error al crear el libro.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,9 +78,10 @@ const BookForm: React.FC = () => {
       </div>
 
       <textarea placeholder="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
-      <button type="submit" disabled={loading}>Add Book</button>
 
-      {error && <p>Error: {error.message}</p>}
+      <button type="submit" disabled={loading}>
+        {loading ? <Spinner /> : "Add Book"}
+      </button>
     </form>
   );
 };
