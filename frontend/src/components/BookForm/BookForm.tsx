@@ -6,16 +6,16 @@ import Rating from '../Rating/Rating';
 import './BookForm.css';
 
 const CREATE_BOOK = gql`
-  mutation CreateBook($title: String!, $author: String!, $status: String!, $rating: Int, $notes: String) {
-    createBook(title: $title, author: $author, status: $status, rating: $rating, notes: $notes) {
-      id
-      title
-      author
-      status
-      rating
-      notes
+    mutation CreateBook($title: String!, $author: String!, $status: String!, $rating: Int, $notes: String) {
+      createBook(title: $title, author: $author, status: $status, rating: $rating, notes: $notes) {
+        id
+        title
+        author
+        status
+        rating
+        notes
+      }
     }
-  }
 `;
 
 const BookForm: React.FC = () => {
