@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { updateBook, deleteBook, selectBook } from '../../store/bookSlice';
+import { toast } from 'react-toastify';
 import './BookColumn.css';
 
 interface Book {
@@ -34,10 +36,12 @@ const DELETE_BOOK = gql`
 
 const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const [updateBookMutation] = useMutation(UPDATE_BOOK);
     const [deleteBookMutation] = useMutation(DELETE_BOOK);
 
     const handleChangeStatus = async (id: string, status: string) => {
+        setLoading(true);
         try {
             const { data } = await updateBookMutation({
                 variables: {
@@ -50,10 +54,14 @@ const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
                 const bookToUpdate = books.find((book) => book.id === id);
                 if (bookToUpdate) {
                     dispatch(updateBook({ ...bookToUpdate, status }));
+                    toast.success(`📚 Estado de "${bookToUpdate.title}" actualizado a ${status}`);
                 }
             }
         } catch (error) {
             console.error("Error al actualizar el estado:", error);
+            toast.error('❌ Hubo un error al actualizar el estado del libro.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -61,6 +69,7 @@ const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
         e.stopPropagation(); 
         const confirmDelete = window.confirm(`¿Estás seguro de que quieres eliminar el libro "${title}"?`);
         if (confirmDelete) {
+            setLoading(true);
             try {
                 await deleteBookMutation({
                     variables: {
@@ -68,8 +77,12 @@ const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
                     },
                 });
                 dispatch(deleteBook(id));
+                toast.success(`🗑️ Libro "${title}" eliminado correctamente.`);
             } catch (error) {
                 console.error("Error al eliminar el libro:", error);
+                toast.error('❌ Hubo un error al eliminar el libro.');
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -98,6 +111,7 @@ const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
                                 value={book.status}
                                 onClick={(e) => e.stopPropagation()}
                                 onChange={(e) => handleChangeStatus(book.id, e.target.value)}
+                                disabled={loading}
                             >
                                 <option value="to_read">To Read</option>
                                 <option value="reading">Reading</option>
@@ -106,8 +120,9 @@ const BookColumn: React.FC<BookColumnProps> = ({ title, books }) => {
                             <button
                                 className="delete-button"
                                 onClick={(e) => handleDelete(book.id, book.title, e)}
+                                disabled={loading}
                             >
-                                ❌
+                                {loading ? "⏳" : "❌"}
                             </button>
                         </div>
                     </li>
