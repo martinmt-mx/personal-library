@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import './Rating.css';
+import React from "react";
+import { useState } from "react";
+import "./Rating.css";
 
 interface RatingProps {
   value: number;
@@ -23,7 +24,9 @@ const Rating: React.FC<RatingProps> = ({ value, onChange }) => {
               onClick={() => onChange(ratingValue)}
             />
             <span
-              className={`star ${ratingValue <= (hover || value) ? 'filled' : ''}`}
+              className={`star ${
+                ratingValue <= (hover || value) ? "filled" : ""
+              }`}
               onMouseEnter={() => setHover(ratingValue)}
               onMouseLeave={() => setHover(null)}
             >
