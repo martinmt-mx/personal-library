@@ -37,5 +37,13 @@ module Types
     def test_field
       "Hello World!"
     end
+
+    field :search_books, [Types::BookType], null: false do
+      argument :query, String, required: true
+    end
+
+    def search_books(query:)
+      Book.where("title ILIKE ? OR author ILIKE ?", "%#{query}%", "%#{query}%")
+    end
   end
 end
