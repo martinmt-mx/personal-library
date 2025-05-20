@@ -1,15 +1,28 @@
-import { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
-import { useDispatch } from 'react-redux';
-import { addBook } from '../../store/bookSlice';
-import Rating from '../Rating/Rating';
-import Spinner from '../Spinner/Spinner';
-import { toast } from 'react-toastify';
-import './BookForm.css';
+import React, { act } from "react";
+import { useState } from "react";
+import { useMutation, gql } from "@apollo/client";
+import { useDispatch } from "react-redux";
+import { addBook } from "../../store/bookSlice";
+import Rating from "../Rating/Rating";
+import Spinner from "../Spinner/Spinner";
+import { toast } from "react-toastify";
+import "./BookForm.css";
 
-const CREATE_BOOK = gql`
-  mutation CreateBook($title: String!, $author: String!, $status: String!, $rating: Int, $notes: String) {
-    createBook(title: $title, author: $author, status: $status, rating: $rating, notes: $notes) {
+export const CREATE_BOOK = gql`
+  mutation CreateBook(
+    $title: String!
+    $author: String!
+    $status: String!
+    $rating: Int
+    $notes: String
+  ) {
+    createBook(
+      title: $title
+      author: $author
+      status: $status
+      rating: $rating
+      notes: $notes
+    ) {
       id
       title
       author
@@ -21,15 +34,15 @@ const CREATE_BOOK = gql`
 `;
 
 const BookForm: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [status, setStatus] = useState('to_read');
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [status, setStatus] = useState("to_read");
   const [rating, setRating] = useState<number>(1);
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState("");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-   const [createBook] = useMutation(CREATE_BOOK);
+  const [createBook] = useMutation(CREATE_BOOK);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,30 +55,51 @@ const BookForm: React.FC = () => {
           author,
           status,
           rating,
-          notes
-        }
+          notes,
+        },
       });
 
       if (data) {
-        dispatch(addBook(data.createBook));
-        toast.success(`📚 Libro "${title}" añadido con éxito!`);
-        setTitle('');
-        setAuthor('');
-        setStatus('to_read');
-        setRating(1);
-        setNotes('');
+        // ✅ Un solo bloque `act` para evitar conflictos
+        await act(async () => {
+          dispatch(addBook(data.createBook));
+          toast.success(`📚 Libro "${title}" añadido con éxito!`);
+          setTitle("");
+          setAuthor("");
+          setStatus("to_read");
+          setRating(1);
+          setNotes("");
+        });
       }
     } catch (err) {
-      toast.error('❌ Hubo un error al crear el libro.');
+      // ✅ Envolvemos en un único `act`
+      await act(async () => {
+        toast.error("❌ Hubo un error al crear el libro.");
+      });
     } finally {
-      setLoading(false);
+      // ✅ Aquí también usamos un único `act`
+      await act(async () => {
+        setLoading(false);
+      });
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="book-form">
-      <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      <input type="text" placeholder="Author" value={author} onChange={(e) => setAuthor(e.target.value)} required />
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Author"
+        value={author}
+        onChange={(e) => setAuthor(e.target.value)}
+        required
+      />
       <select value={status} onChange={(e) => setStatus(e.target.value)}>
         <option value="to_read">To Read</option>
         <option value="reading">Reading</option>
@@ -77,7 +111,11 @@ const BookForm: React.FC = () => {
         <Rating value={rating} onChange={setRating} />
       </div>
 
-      <textarea placeholder="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
+      <textarea
+        placeholder="Notes"
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+      />
 
       <button type="submit" disabled={loading}>
         {loading ? <Spinner /> : "Add Book"}

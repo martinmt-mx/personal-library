@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useMutation, gql } from "@apollo/client";
@@ -5,7 +6,7 @@ import type { RootState } from "../../store";
 import { selectBook, updateBook } from "../../store/bookSlice";
 import "./BookModal.css";
 
-const UPDATE_BOOK = gql`
+export const UPDATE_BOOK = gql`
   mutation UpdateBook(
     $id: ID!
     $title: String!

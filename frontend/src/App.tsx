@@ -1,10 +1,11 @@
-import './App.css';
-import BookForm from './components/BookForm/BookForm';
-import BookList from './components/BookList/BookList';
-import BookModal from './components/BookModal/BookModal';
-import SearchBar from './components/SearchBar/SearchBar';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import "./App.css";
+import BookForm from "./components/BookForm/BookForm";
+import BookList from "./components/BookList/BookList";
+import BookModal from "./components/BookModal/BookModal";
+import SearchBar from "./components/SearchBar/SearchBar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
   return (
@@ -20,7 +21,11 @@ const App: React.FC = () => {
       </main>
 
       <BookModal />
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+      />
     </div>
   );
 };

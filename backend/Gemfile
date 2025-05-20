@@ -54,3 +54,5 @@ group :development do
 end
 
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
+
+gem "rspec-rails", "~> 8.0"
