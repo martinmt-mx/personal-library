@@ -13,12 +13,24 @@ Personal Library es una aplicación para gestionar y organizar tus libros de lec
 
 ## 🔹 Instalación
 
+⚠️ Asegúrate de tener PostgreSQL instalado, inicializado y corriendo antes de continuar. Puedes verificarlo con el siguiente comando:
+
+```bash
+sudo service postgresql status
+```
+
+Y si no está activo, puedes iniciarlo con:
+
+```bash
+sudo service postgresql start
+```
+
 ### ➡️ Backend
 
 1. Clonar el repositorio:
 
    ```bash
-   git clone https://github.com/martinmt-mx/personal-library.git
+   git clone <REPOSITORIO>
    cd personal-library/backend
    ```
 
@@ -125,6 +137,7 @@ project-root
 * `feature/redux-integration`: Integración de Redux.
 * `feature/refresh-book-list`: Actualización en tiempo real de la lista.
 * `feature/search-books`: Implementación del buscador en tiempo real.
+* `feature/test`: Pruebas para frontend y backend.
 
 ## 🔹 Contribuciones
 
